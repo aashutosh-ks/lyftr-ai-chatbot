@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      LLM_API_KEYS: ${LLM_API_KEYS:-}
+      MODEL: ${MODEL:-gpt-4o-mini}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-*}
+      ENABLE_FAILURE_SIMULATION: ${ENABLE_FAILURE_SIMULATION:-true}
+    volumes: ["dbdata:/data"]
+  frontend:
+    build: ./frontend
+    ports: ["3000:80"]
+    depends_on: [backend]
+volumes:
+  dbdata:
